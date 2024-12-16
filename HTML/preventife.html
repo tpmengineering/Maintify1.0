@@ -176,22 +176,39 @@
               <option value="">Select Area/Line</option>
             </select>
           </div>
-          <!-- ZONA -->
+          <!-- ZONE -->
           <div class="mb-3">
-            <label for="zona" class="form-label">Zona</label>
-            <select id="zona" class="form-control" required>
-              <option value="">Select Zona</option>
-              <option value="zona1">Zona 1</option>
-              <option value="zona2">Zona 2</option>
+            <label for="zone" class="form-label">Zone</label>
+            <select id="zone" class="form-control" required>
+              <option value="">Select Zone</option>
+              <option value="noZones">NO ZONES</option>
+              <!-- Looping zone 1 sampai 100 -->
+              <script>
+                for (let i = 1; i <= 100; i++) {
+                  const option = document.createElement("option");
+                  option.value = `zone${i}`;
+                  option.textContent = `Zone ${i}`;
+                  document.getElementById("zone").appendChild(option);
+                }
+              </script>
             </select>
           </div>
+
           <!-- NO MESIN -->
           <div class="mb-3">
             <label for="machineNo" class="form-label">Machine No.</label>
             <select id="machineNo" class="form-control" required>
               <option value="">Select Machine No.</option>
-              <option value="machine1">Machine 1</option>
-              <option value="machine2">Machine 2</option>
+              <option value="noMachineNumber">NO MACHINE NUMBER</option>
+              <!-- Looping mesin 1 sampai 100 -->
+              <script>
+                for (let i = 1; i <= 100; i++) {
+                  const option = document.createElement("option");
+                  option.value = `machine${i}`;
+                  option.textContent = `Machine ${i}`;
+                  document.getElementById("machineNo").appendChild(option);
+                }
+              </script>
             </select>
           </div>
 
@@ -391,7 +408,7 @@
           const requiredDropdowns = [
             "building",
             "areaLine",
-            "zona",
+            "zone",
             "machineNo",
             "inspectionItems",
           ];
