@@ -326,9 +326,10 @@
               }
             );
 
+            // Event listener for when a barcode is detected
             Quagga.onDetected(function (result) {
               const code = result.codeResult.code;
-              document.getElementById("machineId").value = code; // Fill the machine ID field
+              document.getElementById("machineId").value = code; // Fill the machine ID field with the detected barcode
               stopScanner(); // Stop scanner after detecting barcode
             });
           })
