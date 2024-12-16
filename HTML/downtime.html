@@ -53,7 +53,7 @@
         justify-content: center;
         align-items: center;
         margin-bottom: 1rem;
-        gap: 5px;
+        gap: 10px;
       }
       .scanner-container label {
         width: 30%;
@@ -117,8 +117,8 @@
           </div>
 
           <!-- Machine ID (Manual or Barcode Scan) -->
+          <label for="machineId" class="form-label">Machine ID</label>
           <div class="mb-3 scanner-container">
-            <label for="machineId" class="form-label">Machine ID</label>
             <input
               type="text"
               class="form-control"
@@ -291,14 +291,18 @@
 
         const constraints = {
           video: {
-            facingMode: "environment", // Use rear camera
+            facingMode: "environment", // Use rear camera (or front if unavailable)
+            width: { ideal: 1280 }, // Set the ideal width for better resolution
+            height: { ideal: 720 }, // Set the ideal height for better resolution
           },
         };
 
+        // Get user media (camera access)
         navigator.mediaDevices
           .getUserMedia(constraints)
           .then(function (stream) {
             scanner.srcObject = stream; // Display camera feed in video element
+
             // Now start Quagga
             Quagga.init(
               {
@@ -306,6 +310,9 @@
                   name: "Live",
                   type: "LiveStream",
                   target: scanner, // Set the video element as the target
+                  constraints: {
+                    facingMode: "environment", // Use rear camera if possible
+                  },
                 },
                 decoder: {
                   readers: [
@@ -314,6 +321,7 @@
                     "ean_13_reader",
                     "ean_8_reader",
                     "upc_reader",
+                    "code_39_reader", // Include other readers if necessary
                   ],
                 },
               },
@@ -329,6 +337,7 @@
             // Event listener for when a barcode is detected
             Quagga.onDetected(function (result) {
               const code = result.codeResult.code;
+              console.log("Detected barcode:", code); // Log the detected barcode
               document.getElementById("machineId").value = code; // Fill the machine ID field with the detected barcode
               Quagga.stop(); // Stop scanning after barcode is detected
               document.getElementById("barcode-scanner").style.display = "none"; // Hide scanner after detection
