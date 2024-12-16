@@ -284,7 +284,7 @@
         }
       }
 
-      // Function to start the barcode scanner
+      // Function to start the live barcode scanner
       function startBarcodeScanner() {
         document.getElementById("barcode-scanner").style.display = "block"; // Show video element
         const scanner = document.getElementById("scanner");
@@ -330,21 +330,13 @@
             Quagga.onDetected(function (result) {
               const code = result.codeResult.code;
               document.getElementById("machineId").value = code; // Fill the machine ID field with the detected barcode
-              stopScanner(); // Stop scanner after detecting barcode
+              Quagga.stop(); // Stop scanning after barcode is detected
+              document.getElementById("barcode-scanner").style.display = "none"; // Hide scanner after detection
             });
           })
           .catch(function (err) {
             console.error("Camera access denied: ", err);
           });
-      }
-
-      // Stop the barcode scanner
-      function stopScanner() {
-        const scanner = document.getElementById("scanner");
-        const stream = scanner.srcObject;
-        const tracks = stream.getTracks();
-        tracks.forEach((track) => track.stop()); // Stop the camera
-        document.getElementById("barcode-scanner").style.display = "none"; // Hide scanner
       }
 
       // Handle barcode scan button click
