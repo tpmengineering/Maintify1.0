@@ -57,8 +57,6 @@
       }
       .scanner-container label {
         width: 30%;
-        display: flex;
-        align-items: center;
       }
       #barcode-scanner {
         width: 100%;
@@ -206,9 +204,7 @@
 
           <!-- Status -->
           <div class="mb-3" id="status-container" style="display: none">
-            <label for="status-2" class="form-label"
-              >Status</label
-            >
+            <label for="status-2" class="form-label">Status</label>
             <select id="status-2" class="form-control" required>
               <option value="">Select Status</option>
               <option value="changed">Perbaikan Mesin</option>
@@ -290,57 +286,56 @@
 
       // Function to start the barcode scanner
       function startBarcodeScanner() {
-  document.getElementById("barcode-scanner").style.display = "block"; // Show video element
-  const scanner = document.getElementById("scanner");
+        document.getElementById("barcode-scanner").style.display = "block"; // Show video element
+        const scanner = document.getElementById("scanner");
 
-  const constraints = {
-    video: {
-      facingMode: "environment", // Use rear camera
-    },
-  };
-
-  navigator.mediaDevices
-    .getUserMedia(constraints)
-    .then(function (stream) {
-      scanner.srcObject = stream; // Display camera feed in video element
-      // Now start Quagga
-      Quagga.init(
-        {
-          inputStream: {
-            name: "Live",
-            type: "LiveStream",
-            target: scanner, // Set the video element as the target
+        const constraints = {
+          video: {
+            facingMode: "environment", // Use rear camera
           },
-          decoder: {
-            readers: [
-              "code_128_reader",
-              "ean_reader",
-              "ean_13_reader",
-              "ean_8_reader",
-              "upc_reader",
-            ],
-          },
-        },
-        function (err) {
-          if (err) {
-            console.error("Quagga initialization error: ", err);
-            return;
-          }
-          Quagga.start(); // Start barcode detection
-        }
-      );
+        };
 
-      Quagga.onDetected(function (result) {
-        const code = result.codeResult.code;
-        document.getElementById("machineId").value = code; // Fill the machine ID field
-        stopScanner(); // Stop scanner after detecting barcode
-      });
-    })
-    .catch(function (err) {
-      console.error("Camera access denied: ", err);
-    });
-}
+        navigator.mediaDevices
+          .getUserMedia(constraints)
+          .then(function (stream) {
+            scanner.srcObject = stream; // Display camera feed in video element
+            // Now start Quagga
+            Quagga.init(
+              {
+                inputStream: {
+                  name: "Live",
+                  type: "LiveStream",
+                  target: scanner, // Set the video element as the target
+                },
+                decoder: {
+                  readers: [
+                    "code_128_reader",
+                    "ean_reader",
+                    "ean_13_reader",
+                    "ean_8_reader",
+                    "upc_reader",
+                  ],
+                },
+              },
+              function (err) {
+                if (err) {
+                  console.error("Quagga initialization error: ", err);
+                  return;
+                }
+                Quagga.start(); // Start barcode detection
+              }
+            );
 
+            Quagga.onDetected(function (result) {
+              const code = result.codeResult.code;
+              document.getElementById("machineId").value = code; // Fill the machine ID field
+              stopScanner(); // Stop scanner after detecting barcode
+            });
+          })
+          .catch(function (err) {
+            console.error("Camera access denied: ", err);
+          });
+      }
 
       // Stop the barcode scanner
       function stopScanner() {
