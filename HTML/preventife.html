@@ -36,25 +36,51 @@
     />
     <!-- STYLE - START -->
     <style>
-      /* Placeholder Styling for Text Fields */
-      .form-control::placeholder {
-        color: #6c757d; /* Warna abu-abu terang */
-        font-style: italic; /* Gaya miring */
+      /* Styling for Text Fields, Time Picker, and Date Picker */
+      .form-control {
+        border: 2px solid #0d6efd; /* Biru primary untuk border */
+        background-color: #e7f1ff; /* Latar belakang biru muda */
+        color: #0d6efd; /* Warna teks biru */
       }
 
-      /* Styling for <select> Placeholder Option */
+      .form-control:focus {
+        border-color: #0056b3; /* Biru lebih gelap saat fokus */
+        outline: none; /* Hilangkan outline default */
+        box-shadow: 0 0 5px rgba(13, 110, 253, 0.5); /* Glow biru */
+      }
+
+      /* Styling for Select Dropdown */
       select.form-control {
-        color: #495057; /* Warna teks default */
-      }
-      select.form-control option[value=""] {
-        color: #6c757d; /* Placeholder abu-abu */
-        font-style: italic; /* Gaya miring */
+        border: 2px solid #0d6efd; /* Biru primary untuk border */
+        background-color: #e7f1ff; /* Latar belakang biru muda */
+        color: #0d6efd; /* Warna teks biru */
       }
 
-      /* Initial State Styling for Inputs and Selects */
-      .form-control:not(:placeholder-shown):not(:focus),
-      select.form-control:not(:focus) {
-        color: #495057; /* Warna teks normal untuk input terisi */
+      select.form-control:focus {
+        border-color: #0056b3; /* Biru lebih gelap saat fokus */
+        outline: none; /* Hilangkan outline default */
+        box-shadow: 0 0 5px rgba(13, 110, 253, 0.5); /* Glow biru */
+      }
+
+      /* Placeholder Styling for Text Inputs and Select */
+      .form-control::placeholder {
+        color: #6da8ff; /* Placeholder biru muda */
+      }
+
+      /* Placeholder for Select Option */
+      select.form-control option[value=""] {
+        color: #6da8ff; /* Placeholder biru muda untuk opsi spinner */
+      }
+
+      /* Button Inside Form - Consistency */
+      button.btn {
+        background-color: #0d6efd; /* Warna tombol biru primary */
+        color: white; /* Warna teks tombol */
+        border: none;
+      }
+
+      button.btn:hover {
+        background-color: #0056b3; /* Warna tombol biru gelap saat hover */
       }
 
       body {
