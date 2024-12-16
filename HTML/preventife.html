@@ -493,6 +493,7 @@
             customClass: {
               confirmButton: "btn btn-success",
               cancelButton: "btn btn-danger",
+              actions: "my-actions", // Custom class for actions container
             },
             buttonsStyling: false,
           });
@@ -503,8 +504,8 @@
               text: "Do you want to submit the Preventife report?",
               icon: "warning",
               showCancelButton: true,
-              confirmButtonText: "Yes",
-              cancelButtonText: "No",
+              confirmButtonText: "Yes, submit it!",
+              cancelButtonText: "No, cancel!",
               reverseButtons: true,
             })
             .then((result) => {
@@ -535,6 +536,18 @@
                 });
               }
             });
+
+          // Custom CSS to add space between the buttons
+          const style = document.createElement("style");
+          style.innerHTML = `
+      .my-actions .swal2-confirm, .my-actions .swal2-cancel {
+        margin-right: 10px; /* Adjust this value for more or less space */
+      }
+      .my-actions .swal2-cancel {
+        margin-left: 10px; /* Optionally add left margin for the cancel button */
+      }
+    `;
+          document.head.appendChild(style);
         });
 
       // Calculate Repair Time automatically
