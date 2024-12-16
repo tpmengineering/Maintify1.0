@@ -39,26 +39,3 @@ document.getElementById("login-form").addEventListener("submit", function (e) {
   alert("Logged in successfully!");
 });
 // SCREEN REGISTER -> END
-
-// SCREEN REGISTER -> START
-document
-  .getElementById("register-form")
-  .addEventListener("submit", function (event) {
-    const password = document.getElementById("password").value;
-    const confirmPassword = document.getElementById("confirm-password").value;
-    const errorDiv = document.getElementById("password-error");
-
-    if (password !== confirmPassword) {
-      event.preventDefault();
-      errorDiv.style.display = "block";
-    } else {
-      errorDiv.style.display = "none";
-
-      // Clear form inputs after successful submission
-      document.getElementById("register-form").reset();
-
-      // Optional: Display a success message (can be customized further)
-      alert("Registration successful!");
-    }
-  });
-// SCREEN REGISTER -> END
