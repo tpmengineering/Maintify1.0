@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- HEADER -->
+    <title>Maintify1.0 | Dashboard</title>
+    <!-- FAVICON -->
+    <link rel="shortcut icon" href="../ASSETS/IMAGES/iconB.png" type="image/x-icon">
+    <!-- LINK CSS -->
+    <link rel="stylesheet" href="../CSS/style.css">
+    <!-- LINK CSS RESPONSIVE -->
+    <link rel="stylesheet" href="../CSS/responsive.css">
+    <!-- LINK BOOTSTRAP-->
+    <link rel="stylesheet" href="../bootstrap-5.3.3-dist/css/bootstrap.min.css">
+    <!-- LINK FONT - POPPINS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+    <!-- BOXICONS -->
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+    <!-- BOOTSTRAP ICON -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- STYLE - START -->
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding-top: 60px; /* Adjust padding for fixed navbar */
+      }
+      .sidebar {
+        height: 100vh;
+        background-color: #343a40;
+        color: #fff;
+        padding-top: 20px;
+      }
+      .sidebar .nav-link {
+        color: #fff;
+      }
+      .sidebar .nav-link:hover {
+        background-color: #495057;
+      }
+      .main-content {
+        margin-left: 0;
+        padding: 20px;
+      }
+      .footer {
+        text-align: center;
+        padding: 10px;
+        background-color: #f1f1f1;
+        margin-top: 30px;
+      }
+      .card {
+        margin-bottom: 20px;
+      }
+      /* Responsive adjustments for smaller screens */
+      @media (max-width: 768px) {
+        .sidebar {
+          position: absolute;
+          width: 100%;
+          height: auto;
+          padding-top: 10px;
+        }
+        .main-content {
+          margin-left: 0;
+        }
+        .footer {
+          position: absolute;
+          width: 100%;
+          bottom: 0;
+        }
+        .card {
+          margin-bottom: 15px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Maintify1.0</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                aria-current="page"
+                href="dashboard.html"
+                >Home</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Downtime</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Preventife</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="container">
+        <!-- Row of Cards -->
+        <div class="row">
+          <div class="col-md-3 col-sm-6">
+            <div class="card">
+              <div class="card-header bg-primary text-white">
+                Total Downtime
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">35 hours</h5>
+                <p class="card-text">Total downtime reported this week.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <div class="card">
+              <div class="card-header bg-success text-white">
+                Machines Repaired
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">5 Machines</h5>
+                <p class="card-text">Machines repaired this week.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <div class="card">
+              <div class="card-header bg-warning text-white">
+                Pending Issues
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">2 Issues</h5>
+                <p class="card-text">Pending issues that need attention.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <div class="card">
+              <div class="card-header bg-danger text-white">
+                Critical Machines
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">1 Machine</h5>
+                <p class="card-text">Machine in critical condition.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Table of Downtime Report -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                Downtime Report
+            </div>
+            <div class="card-body">
+                <div class="table-responsive"> <!-- Add this class for responsiveness -->
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Machine</th>
+                                <th>Downtime (hrs)</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2024-12-10</td>
+                                <td>Machine 1</td>
+                                <td>4</td>
+                                <td>Repaired</td>
+                            </tr>
+                            <tr>
+                                <td>2024-12-11</td>
+                                <td>Machine 2</td>
+                                <td>5</td>
+                                <td>Repaired</td>
+                            </tr>
+                            <tr>
+                                <td>2024-12-12</td>
+                                <td>Machine 3</td>
+                                <td>3</td>
+                                <td>Pending</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <!-- Footer
+    <div class="footer">
+        <p>&copy; 2024 Company Name. All rights reserved.</p>
+    </div> -->
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
