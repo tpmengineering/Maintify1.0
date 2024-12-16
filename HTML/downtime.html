@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Downtime Form</title>
+    <link rel="stylesheet" href="../CSS/style.css" />
+    <link rel="stylesheet" href="../CSS/responsive.css" />
+    <link
+      rel="stylesheet"
+      href="../bootstrap-5.3.3-dist/css/bootstrap.min.css"
+    />
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+    <script src="https://unpkg.com/quagga@0.12.1/dist/quagga.min.js"></script>
+    <!-- QuaggaJS for barcode scanning -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        margin: 0;
+      }
+      main {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem;
+      }
+      footer {
+        flex-shrink: 0;
+      }
+      .card {
+        width: 100%;
+        max-width: 600px;
+        margin: auto;
+        padding: 2rem;
+      }
+      /* Dropdown style */
+      select,
+      input {
+        width: 100%;
+      }
+      /* Scanner */
+      .scanner-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 1rem;
+        gap: 5px;
+      }
+      .scanner-container label {
+        width: 30%;
+      }
+      #barcode-scanner {
+        width: 100%;
+        height: auto;
+      }
+      /* Media query for larger screens (laptop and up) */
+      @media (max-width: 480px) {
+        .scanner-container label {
+          width: 60%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container">
+      <div class="card shadow-lg">
+        <h3 class="text-center mb-4">Downtime Report</h3>
+        <form id="downtime-form">
+          <!-- Date Field -->
+          <div class="mb-3">
+            <label for="date" class="form-label">Date</label>
+            <input type="date" class="form-control" id="date" required />
+          </div>
+
+          <!-- Location Details -->
+          <div class="mb-3">
+            <label for="building" class="form-label">Building</label>
+            <select id="building" class="form-control" required>
+              <option value="">Select Building</option>
+              <option value="P1">P1</option>
+              <option value="P2">P2</option>
+              <option value="UP2">UP2</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="areaLine" class="form-label">Area/Line</label>
+            <select id="areaLine" class="form-control" required>
+              <option value="">Select Area/Line</option>
+              <option value="ASSEMBLING">ASSEMBLING</option>
+              <option value="CUTTING">CUTTING</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="zona" class="form-label">Zona</label>
+            <select id="zona" class="form-control" required>
+              <option value="">Select Zona</option>
+              <option value="zona1">Zona 1</option>
+              <option value="zona2">Zona 2</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="machineNo" class="form-label">Machine No.</label>
+            <select id="machineNo" class="form-control" required>
+              <option value="">Select Machine No.</option>
+              <option value="machine1">Machine 1</option>
+              <option value="machine2">Machine 2</option>
+            </select>
+          </div>
+
+          <!-- Machine ID (Manual or Barcode Scan) -->
+          <div class="mb-3 scanner-container">
+            <label for="machineId" class="form-label">Machine ID</label>
+            <input
+              type="text"
+              class="form-control"
+              id="machineId"
+              placeholder="Enter Machine ID"
+            />
+            <button type="button" class="btn btn-primary" id="scanBarcode">
+              <i class="bi bi-upc-scan"></i>
+            </button>
+          </div>
+
+          <!-- Camera-based Barcode Scanner -->
+          <div id="barcode-scanner" style="display: none">
+            <video
+              id="scanner"
+              width="100%"
+              height="auto"
+              style="border: 1px solid #ccc"
+            ></video>
+          </div>
+
+          <!-- Downtime Time -->
+          <div class="mb-3">
+            <label for="startDowntime" class="form-label">Start Downtime</label>
+            <input
+              type="time"
+              class="form-control"
+              id="startDowntime"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="finishDowntime" class="form-label"
+              >Finish Downtime</label
+            >
+            <input
+              type="time"
+              class="form-control"
+              id="finishDowntime"
+              required
+            />
+          </div>
+
+          <!-- Repair Time -->
+          <div class="mb-3">
+            <label for="repairTime" class="form-label">Repair Time</label>
+            <input type="text" class="form-control" id="repairTime" readonly />
+          </div>
+
+          <!-- Problem & Action -->
+          <div class="mb-3">
+            <label for="problem" class="form-label">Problem</label>
+            <textarea
+              class="form-control"
+              id="problem"
+              rows="3"
+              required
+            ></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="action" class="form-label">Action</label>
+            <textarea
+              class="form-control"
+              id="action"
+              rows="3"
+              required
+            ></textarea>
+          </div>
+
+          <!-- Completion Status -->
+          <div class="mb-3">
+            <label for="completionStatus" class="form-label"
+              >Completion Status</label
+            >
+            <select id="completionStatus" class="form-control" required>
+              <option value="">Select Status</option>
+              <option value="repaired">Diperbaiki</option>
+              <option value="set">Disetting</option>
+              <option value="changed">Diganti</option>
+              <option value="replaced">Diganti & Diperbaiki</option>
+            </select>
+          </div>
+
+          <!-- Status -->
+          <div class="mb-3" id="status-container" style="display: none">
+            <label for="status-2" class="form-label"
+              >Status</label
+            >
+            <select id="status-2" class="form-control" required>
+              <option value="">Select Status</option>
+              <option value="changed">Perbaikan Mesin</option>
+              <option value="replaced">Pengaturan Mesin</option>
+              <option value="toolChange">Pergantian Alat</option>
+            </select>
+          </div>
+
+          <!-- Spare Part Text Field -->
+          <div class="mb-3" id="sparepart-container" style="display: none">
+            <label for="sparepart" class="form-label">Spare Part</label>
+            <input
+              type="text"
+              class="form-control"
+              id="sparepart"
+              placeholder="Enter Spare Part"
+            />
+          </div>
+
+          <!-- Submit Button -->
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <footer class="text-center py-2 bg-light">
+      <p class="mb-0" style="font-size: 0.9rem">
+        &copy; 2024 TPM Engineering. All rights reserved.
+      </p>
+    </footer>
+
+    <script src="../JS/script.js"></script>
+    <script src="../bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      // SCREEN DOWNTIME -> START
+      // Function to handle Building and Area/Line selection
+      document
+        .getElementById("building")
+        .addEventListener("change", checkBuildingArea);
+      document
+        .getElementById("areaLine")
+        .addEventListener("change", checkBuildingArea);
+
+      function checkBuildingArea() {
+        const building = document.getElementById("building").value;
+        const areaLine = document.getElementById("areaLine").value;
+
+        // Show Status dropdown if Building is P1 or P2 and Area/Line is ASSEMBLING
+        if (
+          (building === "P1" || building === "P2") &&
+          areaLine === "ASSEMBLING"
+        ) {
+          document.getElementById("status-container").style.display = "block";
+        } else {
+          document.getElementById("status-container").style.display = "none";
+        }
+      }
+
+      // Show spare part input if Completion Status is "Changed" or "Replaced"
+      document
+        .getElementById("completionStatus")
+        .addEventListener("change", showSparePartField);
+
+      function showSparePartField() {
+        const completionStatus =
+          document.getElementById("completionStatus").value;
+
+        // Show Spare Part text field when Completion Status is "Changed" or "Replaced"
+        if (completionStatus === "changed" || completionStatus === "replaced") {
+          document.getElementById("sparepart-container").style.display =
+            "block";
+        } else {
+          document.getElementById("sparepart-container").style.display = "none";
+        }
+      }
+
+      // Function to start the barcode scanner
+      function startBarcodeScanner() {
+        document.getElementById("barcode-scanner").style.display = "block"; // Show video element
+        const scanner = document.getElementById("scanner");
+        const constraints = {
+          video: {
+            facingMode: "environment", // Use rear camera
+          },
+        };
+
+        navigator.mediaDevices
+          .getUserMedia(constraints)
+          .then(function (stream) {
+            scanner.srcObject = stream;
+            Quagga.init(
+              {
+                inputStream: {
+                  name: "Live",
+                  type: "LiveStream",
+                  target: scanner,
+                },
+                decoder: {
+                  readers: [
+                    "code_128_reader",
+                    "ean_reader",
+                    "ean_13_reader",
+                    "ean_8_reader",
+                    "upc_reader",
+                  ],
+                },
+              },
+              function (err) {
+                if (err) {
+                  console.log(err);
+                  return;
+                }
+                Quagga.start();
+              }
+            );
+
+            Quagga.onDetected(function (result) {
+              const code = result.codeResult.code;
+              document.getElementById("machineId").value = code; // Fill the machine ID field
+              stopScanner(); // Stop scanner after detecting barcode
+            });
+          });
+      }
+
+      // Stop the barcode scanner
+      function stopScanner() {
+        const scanner = document.getElementById("scanner");
+        const stream = scanner.srcObject;
+        const tracks = stream.getTracks();
+        tracks.forEach((track) => track.stop()); // Stop the camera
+        document.getElementById("barcode-scanner").style.display = "none"; // Hide scanner
+      }
+
+      // Handle barcode scan button click
+      document
+        .getElementById("scanBarcode")
+        .addEventListener("click", function () {
+          startBarcodeScanner();
+        });
+
+      // Form submission
+      document
+        .getElementById("downtime-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault(); // Prevent form submission for now (handle actual submission)
+          alert("Downtime report submitted!");
+        });
+
+      // Calculate Repair Time automatically
+      document
+        .getElementById("finishDowntime")
+        .addEventListener("change", calculateRepairTime);
+      document
+        .getElementById("startDowntime")
+        .addEventListener("change", calculateRepairTime);
+
+      function calculateRepairTime() {
+        const start = document.getElementById("startDowntime").value;
+        const finish = document.getElementById("finishDowntime").value;
+
+        if (start && finish) {
+          const startTime = new Date(`1970-01-01T${start}:00`);
+          const finishTime = new Date(`1970-01-01T${finish}:00`);
+          const repairTime = (finishTime - startTime) / 1000 / 60; // in minutes
+          document.getElementById("repairTime").value = `${repairTime} minutes`;
+        }
+      }
+      // SCREEN DOWNTIME -> END
+    </script>
+  </body>
+</html>
