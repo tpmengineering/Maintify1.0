@@ -176,7 +176,7 @@
               >Completion Status</label
             >
             <select id="completionStatus" class="form-control" required>
-              <option value="">Select Status</option>
+              <option value="">Select Completion Status</option>
               <option value="repaired">Diperbaiki</option>
               <option value="set">Disetting</option>
               <option value="changed">Diganti</option>
@@ -274,6 +274,89 @@
           })
           .catch((err) => console.error(err));
       }
+
+      // SCREEN DOWNTIME -> START
+      // Function to handle Building and Area/Line selection
+      document
+        .getElementById("building")
+        .addEventListener("change", checkBuildingArea);
+      document
+        .getElementById("areaLine")
+        .addEventListener("change", checkBuildingArea);
+
+      function checkBuildingArea() {
+        const building = document.getElementById("building").value;
+        const areaLine = document.getElementById("areaLine").value;
+
+        // Show Status dropdown if Building is P1 or P2 and Area/Line is ASSEMBLING
+        if (
+          (building === "P1" || building === "P2") &&
+          areaLine === "ASSEMBLING"
+        ) {
+          document.getElementById("status-container").style.display = "block";
+        } else {
+          document.getElementById("status-container").style.display = "none";
+        }
+      }
+
+      // Show spare part input if Completion Status is "Changed" or "Replaced"
+      document
+        .getElementById("completionStatus")
+        .addEventListener("change", showSparePartField);
+
+      function showSparePartField() {
+        const completionStatus =
+          document.getElementById("completionStatus").value;
+
+        // Show Spare Part text field when Completion Status is "Changed" or "Replaced"
+        if (completionStatus === "changed" || completionStatus === "replaced") {
+          document.getElementById("sparepart-container").style.display =
+            "block";
+        } else {
+          document.getElementById("sparepart-container").style.display = "none";
+        }
+      }
+
+      // Form submission
+      document
+        .getElementById("downtime-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault(); // Prevent form submission for now (handle actual submission)
+          alert("Downtime report submitted!");
+        });
+
+      // Calculate Repair Time automatically
+      document
+        .getElementById("finishDowntime")
+        .addEventListener("change", calculateRepairTime);
+      document
+        .getElementById("startDowntime")
+        .addEventListener("change", calculateRepairTime);
+
+      function calculateRepairTime() {
+        const start = document.getElementById("startDowntime").value;
+        const finish = document.getElementById("finishDowntime").value;
+
+        if (start && finish) {
+          const startTime = new Date(`1970-01-01T${start}:00`);
+          const finishTime = new Date(`1970-01-01T${finish}:00`);
+          let repairTime = (finishTime - startTime) / 1000 / 60; // in minutes
+
+          const hours = Math.floor(repairTime / 60); // Get the whole hours
+          const minutes = repairTime % 60; // Get the remainder of minutes
+
+          // Format as HH:MM
+          const formattedTime = `${hours
+            .toString()
+            .padStart(2, "0")}:${Math.round(minutes)
+            .toString()
+            .padStart(2, "0")}`;
+
+          document.getElementById("repairTime").value = formattedTime;
+        }
+      }
+
+      // SCREEN DOWNTIME -> END
     </script>
   </body>
 </html>
