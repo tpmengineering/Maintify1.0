@@ -294,8 +294,10 @@
           areaLine === "ASSEMBLING"
         ) {
           document.getElementById("status-container").style.display = "block";
+          document.getElementById("status-2").setAttribute("required", "true"); // Make Status required
         } else {
           document.getElementById("status-container").style.display = "none";
+          document.getElementById("status-2").removeAttribute("required"); // Remove required from Status
         }
       }
 
@@ -312,8 +314,10 @@
         if (completionStatus === "changed" || completionStatus === "replaced") {
           document.getElementById("sparepart-container").style.display =
             "block";
+          document.getElementById("sparepart").setAttribute("required", "true"); // Make Spare Part required
         } else {
           document.getElementById("sparepart-container").style.display = "none";
+          document.getElementById("sparepart").removeAttribute("required"); // Remove required from Spare Part
         }
       }
 
@@ -323,6 +327,15 @@
         .addEventListener("submit", function (e) {
           e.preventDefault(); // Prevent form submission for now (handle actual submission)
           alert("Downtime report submitted!");
+          // Reset the form to its initial state
+          document.getElementById("downtime-form").reset();
+
+          // Clear the repair time field as it's a calculated value
+          document.getElementById("repairTime").value = "";
+
+          // Optionally, hide any additional fields that are conditionally shown
+          document.getElementById("status-container").style.display = "none";
+          document.getElementById("sparepart-container").style.display = "none";
         });
 
       // Calculate Repair Time automatically
