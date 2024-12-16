@@ -36,6 +36,16 @@
     />
     <!-- STYLE - START -->
     <style>
+      /* Add custom invalid feedback styling */
+      .is-invalid {
+        border-color: #dc3545; /* Bootstrap danger color */
+        box-shadow: 0 0 5px rgba(220, 53, 69, 0.5); /* Red glow */
+      }
+
+      .is-invalid:focus {
+        border-color: #dc3545;
+        box-shadow: 0 0 5px rgba(220, 53, 69, 0.5);
+      }
       /* Styling for Text Fields, Time Picker, and Date Picker */
       .form-control {
         border: 2px solid #0d6efd; /* Biru primary untuk border */
@@ -370,6 +380,60 @@
       // BACA BARCODE - END
 
       // SCREEN PREVENTIFE -> START
+      // Form submission with additional validation
+      document
+        .getElementById("preventife-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault(); // Prevent default form submission
+
+          // Check if all dropdowns are selected
+          const requiredDropdowns = [
+            "building",
+            "areaLine",
+            "zona",
+            "machineNo",
+            "inspectionItems",
+          ];
+
+          let allSelected = true;
+          requiredDropdowns.forEach((id) => {
+            const dropdown = document.getElementById(id);
+            if (dropdown.value === "") {
+              allSelected = false;
+              dropdown.classList.add("is-invalid"); // Add error styling
+            } else {
+              dropdown.classList.remove("is-invalid"); // Remove error styling
+            }
+          });
+
+          // If not all dropdowns are selected, show an alert and do not submit
+          if (!allSelected) {
+            alert(
+              "Please select all required fields before submitting the form."
+            );
+            return;
+          }
+
+          // If validation passes, show success message and reset the form
+          alert("Preventive report submitted successfully!");
+          document.getElementById("preventife-form").reset();
+
+          // Clear calculated fields
+          document.getElementById("repairTime").value = "";
+        });
+
+      // Optional: Add live validation for dropdowns
+      const dropdowns = document.querySelectorAll("select");
+      dropdowns.forEach((dropdown) => {
+        dropdown.addEventListener("change", () => {
+          if (dropdown.value === "") {
+            dropdown.classList.add("is-invalid");
+          } else {
+            dropdown.classList.remove("is-invalid");
+          }
+        });
+      });
+
       // Data mapping between Building and Area/Line
       const areaLineOptions = {
         B1: ["HOTPRESS", "MIXING", "DEGRESING", "LAINNYA"],
