@@ -34,6 +34,8 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
     />
+    <!-- SWEET ALERT -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- STYLE - START -->
     <style>
       /* Add custom invalid feedback styling */
@@ -485,16 +487,54 @@
         .getElementById("preventife-form")
         .addEventListener("submit", function (e) {
           e.preventDefault(); // Prevent form submission for now (handle actual submission)
-          alert("Preventife report submitted!");
-          // Reset the form to its initial state
-          document.getElementById("preventife-form").reset();
 
-          // Clear the repair time field as it's a calculated value
-          document.getElementById("repairTime").value = "";
+          // SweetAlert confirmation
+          const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+              confirmButton: "btn btn-success",
+              cancelButton: "btn btn-danger",
+            },
+            buttonsStyling: false,
+          });
 
-          // Optionally, hide any additional fields that are conditionally shown
-          document.getElementById("status-container").style.display = "none";
-          document.getElementById("sparepart-container").style.display = "none";
+          swalWithBootstrapButtons
+            .fire({
+              title: "Are you sure?",
+              text: "Do you want to submit the Preventife report?",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonText: "Yes, submit it!",
+              cancelButtonText: "No, cancel!",
+              reverseButtons: true,
+            })
+            .then((result) => {
+              if (result.isConfirmed) {
+                // On confirmation, submit the form
+                swalWithBootstrapButtons.fire({
+                  title: "Submitted!",
+                  text: "Your Preventife report has been submitted.",
+                  icon: "success",
+                });
+
+                // Reset the form to its initial state
+                document.getElementById("preventife-form").reset();
+
+                // Clear the repair time field as it's a calculated value
+                document.getElementById("repairTime").value = "";
+
+                // Optionally, hide any additional fields that are conditionally shown
+                document.getElementById("status-container").style.display =
+                  "none";
+                document.getElementById("sparepart-container").style.display =
+                  "none";
+              } else if (result.dismiss === Swal.DismissReason.cancel) {
+                swalWithBootstrapButtons.fire({
+                  title: "Cancelled",
+                  text: "Your report has not been submitted.",
+                  icon: "error",
+                });
+              }
+            });
         });
 
       // Calculate Repair Time automatically
