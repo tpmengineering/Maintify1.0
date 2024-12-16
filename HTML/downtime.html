@@ -23,6 +23,53 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!-- STYLE - START -->
     <style>
+      /* Styling for Text Fields, Time Picker, and Date Picker */
+      .form-control {
+        border: 2px solid #0d6efd; /* Biru primary untuk border */
+        background-color: #e7f1ff; /* Latar belakang biru muda */
+        color: #0d6efd; /* Warna teks biru */
+      }
+
+      .form-control:focus {
+        border-color: #0056b3; /* Biru lebih gelap saat fokus */
+        outline: none; /* Hilangkan outline default */
+        box-shadow: 0 0 5px rgba(13, 110, 253, 0.5); /* Glow biru */
+      }
+
+      /* Styling for Select Dropdown */
+      select.form-control {
+        border: 2px solid #0d6efd; /* Biru primary untuk border */
+        background-color: #e7f1ff; /* Latar belakang biru muda */
+        color: #0d6efd; /* Warna teks biru */
+      }
+
+      select.form-control:focus {
+        border-color: #0056b3; /* Biru lebih gelap saat fokus */
+        outline: none; /* Hilangkan outline default */
+        box-shadow: 0 0 5px rgba(13, 110, 253, 0.5); /* Glow biru */
+      }
+
+      /* Placeholder Styling for Text Inputs and Select */
+      .form-control::placeholder {
+        color: #6da8ff; /* Placeholder biru muda */
+      }
+
+      /* Placeholder for Select Option */
+      select.form-control option[value=""] {
+        color: #6da8ff; /* Placeholder biru muda untuk opsi spinner */
+      }
+
+      /* Button Inside Form - Consistency */
+      button.btn {
+        background-color: #0d6efd; /* Warna tombol biru primary */
+        color: white; /* Warna teks tombol */
+        border: none;
+      }
+
+      button.btn:hover {
+        background-color: #0056b3; /* Warna tombol biru gelap saat hover */
+      }
+
       body {
         display: flex;
         flex-direction: column;
@@ -229,7 +276,7 @@
 
           <!-- BUTTON SUBMIT -->
           <div class="d-grid">
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary mt-3" style="padding: 10px 0;">Submit</button>
           </div>
         </form>
       </div>
