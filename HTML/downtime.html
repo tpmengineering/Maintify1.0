@@ -3,18 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Downtime Form</title>
-    <link rel="stylesheet" href="../CSS/style.css" />
-    <link rel="stylesheet" href="../CSS/responsive.css" />
-    <link
-      rel="stylesheet"
-      href="../bootstrap-5.3.3-dist/css/bootstrap.min.css"
-    />
+    <!-- HEADER -->
+    <title>Maintify1.0 | Downtime Report</title>
+    <!-- FAVICON -->
+    <link rel="shortcut icon" href="../ASSETS/IMAGES/iconB.png" type="image/x-icon">
+    <!-- LINK CSS -->
+    <link rel="stylesheet" href="../CSS/style.css">
+    <!-- LINK CSS RESPONSIVE -->
+    <link rel="stylesheet" href="../CSS/responsive.css">
+    <!-- LINK BOOTSTRAP-->
+    <link rel="stylesheet" href="../bootstrap-5.3.3-dist/css/bootstrap.min.css">
+    <!-- LINK FONT - POPPINS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+    <!-- BOXICONS -->
     <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-    />
+    <!-- BOOTSTRAP ICON -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- STYLE - START -->
     <style>
       body {
         display: flex;
@@ -59,17 +66,21 @@
         }
       }
     </style>
+    <!-- STYLE - END -->
   </head>
   <body>
+    <!-- DOWNTIME - START -->
     <main class="container">
       <div class="card shadow-lg">
         <h3 class="text-center mb-4">Downtime Report</h3>
         <form id="downtime-form">
+          <!-- TANGGAL -->
           <div class="mb-3">
             <label for="date" class="form-label">Date</label>
             <input type="date" class="form-control" id="date" required />
           </div>
 
+          <!-- BUILDING -->
           <div class="mb-3">
             <label for="building" class="form-label">Building</label>
             <select id="building" class="form-control" required>
@@ -79,6 +90,7 @@
               <option value="UP2">UP2</option>
             </select>
           </div>
+          <!-- AREA/LINE -->
           <div class="mb-3">
             <label for="areaLine" class="form-label">Area/Line</label>
             <select id="areaLine" class="form-control" required>
@@ -87,6 +99,7 @@
               <option value="CUTTING">CUTTING</option>
             </select>
           </div>
+          <!-- ZONA -->
           <div class="mb-3">
             <label for="zona" class="form-label">Zona</label>
             <select id="zona" class="form-control" required>
@@ -95,6 +108,7 @@
               <option value="zona2">Zona 2</option>
             </select>
           </div>
+          <!-- NO MESIN -->
           <div class="mb-3">
             <label for="machineNo" class="form-label">Machine No.</label>
             <select id="machineNo" class="form-control" required>
@@ -104,6 +118,7 @@
             </select>
           </div>
 
+          <!-- MACHINE ID -->
           <label for="machineId" class="form-label">Machine ID</label>
           <div class="mb-3 scanner-container">
             <input
@@ -126,6 +141,7 @@
             ></video>
           </div>
 
+          <!-- START DOWNTIME -->
           <div class="mb-3">
             <label for="startDowntime" class="form-label">Start Downtime</label>
             <input
@@ -135,6 +151,7 @@
               required
             />
           </div>
+          <!-- FINISH DOWNTIME -->
           <div class="mb-3">
             <label for="finishDowntime" class="form-label"
               >Finish Downtime</label
@@ -146,12 +163,13 @@
               required
             />
           </div>
-
+          <!-- REPAIR TIME -->
           <div class="mb-3">
             <label for="repairTime" class="form-label">Repair Time</label>
             <input type="text" class="form-control" id="repairTime" readonly />
           </div>
 
+          <!-- PROBLEM -->
           <div class="mb-3">
             <label for="problem" class="form-label">Problem</label>
             <textarea
@@ -161,6 +179,8 @@
               required
             ></textarea>
           </div>
+
+          <!-- ACTION -->
           <div class="mb-3">
             <label for="action" class="form-label">Action</label>
             <textarea
@@ -171,6 +191,7 @@
             ></textarea>
           </div>
 
+          <!-- COMPLETION STATUS -->
           <div class="mb-3">
             <label for="completionStatus" class="form-label"
               >Completion Status</label
@@ -183,7 +204,8 @@
               <option value="replaced">Diganti & Diperbaiki</option>
             </select>
           </div>
-
+          
+          <!-- STATUS -->
           <div class="mb-3" id="status-container" style="display: none">
             <label for="status-2" class="form-label">Status</label>
             <select id="status-2" class="form-control" required>
@@ -194,6 +216,7 @@
             </select>
           </div>
 
+          <!-- SPAREPART -->
           <div class="mb-3" id="sparepart-container" style="display: none">
             <label for="sparepart" class="form-label">Spare Part</label>
             <input
@@ -204,6 +227,7 @@
             />
           </div>
 
+          <!-- BUTTON SUBMIT -->
           <div class="d-grid">
             <button type="submit" class="btn btn-primary">Submit</button>
           </div>
@@ -211,19 +235,24 @@
       </div>
     </main>
 
+    <!-- FOOTER -->
     <footer class="text-center py-2 bg-light">
       <p class="mb-0" style="font-size: 0.9rem">
         &copy; 2024 TPM Engineering. All rights reserved.
       </p>
     </footer>
+    <!-- DOWNTIME - END -->
 
+    <!-- JAVASCRIPT -->
     <script src="../JS/script.js"></script>
+    <!-- JAVASCRIPT BOOTSTRAP -->
     <script src="../bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
-
+    <!-- ZXING LIBRARY -->
     <script
-      type="text/javascript"
-      src="https://unpkg.com/@zxing/library@latest"
+    type="text/javascript"
+    src="https://unpkg.com/@zxing/library@latest"
     ></script>
+    <!-- JQUERY LIBRARY -->
     <script
       src="https://code.jquery.com/jquery-3.5.1.min.js"
       integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
@@ -231,6 +260,7 @@
     ></script>
 
     <script>
+      // BACA BARCODE - START
       let selectedDeviceId = null;
       const codeReader = new ZXing.BrowserMultiFormatReader();
       const sourceSelect = $("#pilihKamera");
@@ -274,6 +304,7 @@
           })
           .catch((err) => console.error(err));
       }
+      // BACA BARCODE - END
 
       // SCREEN DOWNTIME -> START
       // Function to handle Building and Area/Line selection
