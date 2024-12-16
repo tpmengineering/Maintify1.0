@@ -38,12 +38,6 @@
         margin: auto;
         padding: 2rem;
       }
-      /* Dropdown style */
-      select,
-      input {
-        width: 100%;
-      }
-      /* Scanner */
       .scanner-container {
         display: flex;
         justify-content: center;
@@ -57,8 +51,8 @@
       #barcode-scanner {
         width: 100%;
         height: auto;
+        display: none;
       }
-      /* Media query for larger screens (laptop and up) */
       @media (max-width: 480px) {
         .scanner-container label {
           width: 60%;
@@ -71,13 +65,11 @@
       <div class="card shadow-lg">
         <h3 class="text-center mb-4">Downtime Report</h3>
         <form id="downtime-form">
-          <!-- Date Field -->
           <div class="mb-3">
             <label for="date" class="form-label">Date</label>
             <input type="date" class="form-control" id="date" required />
           </div>
 
-          <!-- Location Details -->
           <div class="mb-3">
             <label for="building" class="form-label">Building</label>
             <select id="building" class="form-control" required>
@@ -112,7 +104,6 @@
             </select>
           </div>
 
-          <!-- Machine ID (Manual or Barcode Scan) -->
           <label for="machineId" class="form-label">Machine ID</label>
           <div class="mb-3 scanner-container">
             <input
@@ -126,17 +117,10 @@
             </button>
           </div>
 
-          <!-- Camera-based Barcode Scanner -->
-          <div id="barcode-scanner" style="display: none">
-            <video
-              id="scanner"
-              width="100%"
-              height="auto"
-              style="border: 1px solid #ccc"
-            ></video>
+          <div id="barcode-scanner">
+            <video id="scanner" width="100%" height="auto" style="border: 1px solid #ccc"></video>
           </div>
 
-          <!-- Downtime Time -->
           <div class="mb-3">
             <label for="startDowntime" class="form-label">Start Downtime</label>
             <input
@@ -147,9 +131,7 @@
             />
           </div>
           <div class="mb-3">
-            <label for="finishDowntime" class="form-label"
-              >Finish Downtime</label
-            >
+            <label for="finishDowntime" class="form-label">Finish Downtime</label>
             <input
               type="time"
               class="form-control"
@@ -158,13 +140,11 @@
             />
           </div>
 
-          <!-- Repair Time -->
           <div class="mb-3">
             <label for="repairTime" class="form-label">Repair Time</label>
             <input type="text" class="form-control" id="repairTime" readonly />
           </div>
 
-          <!-- Problem & Action -->
           <div class="mb-3">
             <label for="problem" class="form-label">Problem</label>
             <textarea
@@ -184,11 +164,8 @@
             ></textarea>
           </div>
 
-          <!-- Completion Status -->
           <div class="mb-3">
-            <label for="completionStatus" class="form-label"
-              >Completion Status</label
-            >
+            <label for="completionStatus" class="form-label">Completion Status</label>
             <select id="completionStatus" class="form-control" required>
               <option value="">Select Status</option>
               <option value="repaired">Diperbaiki</option>
@@ -198,7 +175,6 @@
             </select>
           </div>
 
-          <!-- Status -->
           <div class="mb-3" id="status-container" style="display: none">
             <label for="status-2" class="form-label">Status</label>
             <select id="status-2" class="form-control" required>
@@ -209,7 +185,6 @@
             </select>
           </div>
 
-          <!-- Spare Part Text Field -->
           <div class="mb-3" id="sparepart-container" style="display: none">
             <label for="sparepart" class="form-label">Spare Part</label>
             <input
@@ -220,7 +195,6 @@
             />
           </div>
 
-          <!-- Submit Button -->
           <div class="d-grid">
             <button type="submit" class="btn btn-primary">Submit</button>
           </div>
@@ -237,77 +211,59 @@
     <script src="../JS/script.js"></script>
     <script src="../bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
 
+    <script
+      type="text/javascript"
+      src="https://unpkg.com/@zxing/library@latest"
+    ></script>
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.min.js"
+      integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+      crossorigin="anonymous"
+    ></script>
+
     <script>
-      // SCREEN DOWNTIME -> START
-      // Function to handle Building and Area/Line selection
-      document
-        .getElementById("building")
-        .addEventListener("change", checkBuildingArea);
-      document
-        .getElementById("areaLine")
-        .addEventListener("change", checkBuildingArea);
+      let selectedDeviceId = null;
+      const codeReader = new ZXing.BrowserMultiFormatReader();
+      const sourceSelect = $("#pilihKamera");
 
-      function checkBuildingArea() {
-        const building = document.getElementById("building").value;
-        const areaLine = document.getElementById("areaLine").value;
+      $(document).on("click", "#scanBarcode", function () {
+        document.getElementById("barcode-scanner").style.display = "block"; // Show video container
+        initScanner();
+      });
 
-        // Show Status dropdown if Building is P1 or P2 and Area/Line is ASSEMBLING
-        if (
-          (building === "P1" || building === "P2") &&
-          areaLine === "ASSEMBLING"
-        ) {
-          document.getElementById("status-container").style.display = "block";
-        } else {
-          document.getElementById("status-container").style.display = "none";
-        }
+      function initScanner() {
+        codeReader
+          .listVideoInputDevices()
+          .then((videoInputDevices) => {
+            videoInputDevices.forEach((device) =>
+              console.log(`${device.label}, ${device.deviceId}`)
+            );
+
+            if (videoInputDevices.length > 0) {
+              if (selectedDeviceId == null) {
+                if (videoInputDevices.length > 1) {
+                  selectedDeviceId = videoInputDevices[1].deviceId;
+                } else {
+                  selectedDeviceId = videoInputDevices[0].deviceId;
+                }
+              }
+
+              if (videoInputDevices.length >= 1) {
+                codeReader
+                  .decodeOnceFromVideoDevice(selectedDeviceId, "scanner")
+                  .then((result) => {
+                    console.log(result.text);
+                    document.getElementById("machineId").value = result.text; // Set result to input
+                    document.getElementById("barcode-scanner").style.display = "none"; // Hide scanner
+                  })
+                  .catch((err) => console.error(err));
+              }
+            } else {
+              alert("Camera not found!");
+            }
+          })
+          .catch((err) => console.error(err));
       }
-
-      // Show spare part input if Completion Status is "Changed" or "Replaced"
-      document
-        .getElementById("completionStatus")
-        .addEventListener("change", showSparePartField);
-
-      function showSparePartField() {
-        const completionStatus =
-          document.getElementById("completionStatus").value;
-
-        // Show Spare Part text field when Completion Status is "Changed" or "Replaced"
-        if (completionStatus === "changed" || completionStatus === "replaced") {
-          document.getElementById("sparepart-container").style.display =
-            "block";
-        } else {
-          document.getElementById("sparepart-container").style.display = "none";
-        }
-      }
-
-      // Form submission
-      document
-        .getElementById("downtime-form")
-        .addEventListener("submit", function (e) {
-          e.preventDefault(); // Prevent form submission for now (handle actual submission)
-          alert("Downtime report submitted!");
-        });
-
-      // Calculate Repair Time automatically
-      document
-        .getElementById("finishDowntime")
-        .addEventListener("change", calculateRepairTime);
-      document
-        .getElementById("startDowntime")
-        .addEventListener("change", calculateRepairTime);
-
-      function calculateRepairTime() {
-        const start = document.getElementById("startDowntime").value;
-        const finish = document.getElementById("finishDowntime").value;
-
-        if (start && finish) {
-          const startTime = new Date(`1970-01-01T${start}:00`);
-          const finishTime = new Date(`1970-01-01T${finish}:00`);
-          const repairTime = (finishTime - startTime) / 1000 / 60; // in minutes
-          document.getElementById("repairTime").value = `${repairTime} minutes`;
-        }
-      }
-      // SCREEN DOWNTIME -> END
     </script>
   </body>
 </html>
