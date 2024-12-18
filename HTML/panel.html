@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- HEADER -->
-    <title>Maintify1.0 | Downtime Report</title>
+    <title>Maintify1.0 | Electrical Panel Report</title>
     <!-- FAVICON -->
     <link rel="shortcut icon" href="../ASSETS/IMAGES/iconB.png" type="image/x-icon">
     <!-- LINK CSS -->
@@ -116,55 +116,43 @@
     <!-- STYLE - END -->
   </head>
   <body>
-    <!-- DOWNTIME - START -->
+    <!-- ELECTRICAL PANEL - START -->
     <main class="container">
       <div class="card shadow-lg">
-        <h3 class="text-center mb-4">Downtime Report</h3>
-        <form id="downtime-form">
+        <h3 class="text-center mb-4">Electrical Panel Report</h3>
+        <form id="electricalPanel-form" action="submit_report.php" method="POST">
           <!-- TANGGAL -->
           <div class="mb-3">
             <label for="date" class="form-label">Date</label>
-            <input type="date" class="form-control" id="date" required />
+            <input type="date" class="form-control" id="date" name="date" required />
           </div>
-
+        
           <!-- BUILDING -->
           <div class="mb-3">
             <label for="building" class="form-label">Building</label>
-            <select id="building" class="form-control" required>
+            <select id="building" class="form-control" name="building" required>
               <option value="">Select Building</option>
+              <option value="UP1">UP1</option>
+              <option value="UP2">UP2</option>
               <option value="P1">P1</option>
               <option value="P2">P2</option>
-              <option value="UP2">UP2</option>
+              <option value="B1">B1</option>
+              <option value="B3">B3</option>
+              <option value="B4">B4</option>
+              <option value="HYDRANT">HYDRANT</option>
+              <option value="POWERPLANT1">POWER PLANT 1</option>
+              <option value="POWERPLANTB3">POWER PLANT B3</option>
+              <option value="RMCC">RMCC</option>
+              <option value="RMCCUTARA">RMCC UTARA</option>
+              <option value="RSC">RSC</option>
+              <option value="KLINIK">KLINIK</option>
+              <option value="CUTTINGDIES">CUTTING DIES</option>
+              <option value="KANTIN1">KANTIN1</option>
+              <option value="KANTIN2">KANTIN2</option>
+              <option value="WORKSHOP">WORKSHOP</option>
             </select>
           </div>
-          <!-- AREA/LINE -->
-          <div class="mb-3">
-            <label for="areaLine" class="form-label">Area/Line</label>
-            <select id="areaLine" class="form-control" required>
-              <option value="">Select Area/Line</option>
-              <option value="ASSEMBLING">ASSEMBLING</option>
-              <option value="CUTTING">CUTTING</option>
-            </select>
-          </div>
-          <!-- ZONA -->
-          <div class="mb-3">
-            <label for="zona" class="form-label">Zona</label>
-            <select id="zona" class="form-control" required>
-              <option value="">Select Zona</option>
-              <option value="zona1">Zona 1</option>
-              <option value="zona2">Zona 2</option>
-            </select>
-          </div>
-          <!-- NO MESIN -->
-          <div class="mb-3">
-            <label for="machineNo" class="form-label">Machine No.</label>
-            <select id="machineNo" class="form-control" required>
-              <option value="">Select Machine No.</option>
-              <option value="machine1">Machine 1</option>
-              <option value="machine2">Machine 2</option>
-            </select>
-          </div>
-
+        
           <!-- MACHINE ID -->
           <label for="machineId" class="form-label">Machine ID</label>
           <div class="mb-3 scanner-container">
@@ -172,6 +160,7 @@
               type="text"
               class="form-control"
               id="machineId"
+              name="machineId"  
               placeholder="Enter Machine ID"
             />
             <button type="button" class="btn btn-primary" id="scanBarcode">
@@ -179,108 +168,27 @@
             </button>
           </div>
 
-          <div id="barcode-scanner">
-            <video
-              id="scanner"
-              width="100%"
-              height="auto"
-              style="border: 1px solid #ccc"
-            ></video>
-          </div>
-
-          <!-- START DOWNTIME -->
+          <!-- UPLOAD DOCUMENTATION -->
           <div class="mb-3">
-            <label for="startDowntime" class="form-label">Start Downtime</label>
-            <input
-              type="time"
-              class="form-control"
-              id="startDowntime"
-              required
-            />
-          </div>
-          <!-- FINISH DOWNTIME -->
-          <div class="mb-3">
-            <label for="finishDowntime" class="form-label"
-              >Finish Downtime</label
+            <label for="documentationUP" class="form-label"
+              >Upload Documentation</label
             >
             <input
-              type="time"
+              type="file"
               class="form-control"
-              id="finishDowntime"
+              id="documentationUP"
+              name="documentationUP"
+              accept="image/*"
               required
             />
           </div>
-          <!-- REPAIR TIME -->
-          <div class="mb-3">
-            <label for="repairTime" class="form-label">Repair Time</label>
-            <input type="text" class="form-control" id="repairTime" placeholder="-" readonly />
-          </div>
-
-          <!-- PROBLEM -->
-          <div class="mb-3">
-            <label for="problem" class="form-label">Problem</label>
-            <textarea
-              class="form-control"
-              id="problem"
-              rows="3"
-              placeholder="Describe the problem that occurred with the machine."
-              required
-            ></textarea>
-          </div>
-
-          <!-- ACTION -->
-          <div class="mb-3">
-            <label for="action" class="form-label">Action</label>
-            <textarea
-              class="form-control"
-              id="action"
-              rows="3"
-              placeholder="Describe the corrective actions taken on the machine."
-              required
-            ></textarea>
-          </div>
-
-          <!-- COMPLETION STATUS -->
-          <div class="mb-3">
-            <label for="completionStatus" class="form-label"
-              >Completion Status</label
-            >
-            <select id="completionStatus" class="form-control" required>
-              <option value="">Select Completion Status</option>
-              <option value="repaired">Diperbaiki</option>
-              <option value="set">Disetting</option>
-              <option value="changed">Diganti</option>
-              <option value="replaced">Diganti & Diperbaiki</option>
-            </select>
-          </div>
-          
-          <!-- STATUS -->
-          <div class="mb-3" id="status-container" style="display: none">
-            <label for="status-2" class="form-label">Status</label>
-            <select id="status-2" class="form-control" required>
-              <option value="">Select Status</option>
-              <option value="changed">Perbaikan Mesin</option>
-              <option value="replaced">Pengaturan Mesin</option>
-              <option value="toolChange">Pergantian Alat</option>
-            </select>
-          </div>
-
-          <!-- SPAREPART -->
-          <div class="mb-3" id="sparepart-container" style="display: none">
-            <label for="sparepart" class="form-label">Spare Part</label>
-            <input
-              type="text"
-              class="form-control"
-              id="sparepart"
-              placeholder="Enter Spare Part"
-            />
-          </div>
-
+        
           <!-- BUTTON SUBMIT -->
           <div class="d-grid">
             <button type="submit" class="btn btn-primary mt-3" style="padding: 10px 0;">Submit</button>
           </div>
         </form>
+        
       </div>
     </main>
 
@@ -290,10 +198,8 @@
         &copy; 2024 TPM Engineering. All rights reserved.
       </p>
     </footer>
-    <!-- DOWNTIME - END -->
+    <!-- ELECTRICAL PANEL - END -->
 
-    <!-- JAVASCRIPT -->
-    <script src="../JS/script.js"></script>
     <!-- JAVASCRIPT BOOTSTRAP -->
     <script src="../bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
     <!-- ZXING LIBRARY -->
@@ -355,60 +261,15 @@
       }
       // BACA BARCODE - END
 
-      // SCREEN DOWNTIME -> START
-      // Function to handle Building and Area/Line selection
-      document
-        .getElementById("building")
-        .addEventListener("change", checkBuildingArea);
-      document
-        .getElementById("areaLine")
-        .addEventListener("change", checkBuildingArea);
-
-      function checkBuildingArea() {
-        const building = document.getElementById("building").value;
-        const areaLine = document.getElementById("areaLine").value;
-
-        // Show Status dropdown if Building is P1 or P2 and Area/Line is ASSEMBLING
-        if (
-          (building === "P1" || building === "P2") &&
-          areaLine === "ASSEMBLING"
-        ) {
-          document.getElementById("status-container").style.display = "block";
-          document.getElementById("status-2").setAttribute("required", "true"); // Make Status required
-        } else {
-          document.getElementById("status-container").style.display = "none";
-          document.getElementById("status-2").removeAttribute("required"); // Remove required from Status
-        }
-      }
-
-      // Show spare part input if Completion Status is "Changed" or "Replaced"
-      document
-        .getElementById("completionStatus")
-        .addEventListener("change", showSparePartField);
-
-      function showSparePartField() {
-        const completionStatus =
-          document.getElementById("completionStatus").value;
-
-        // Show Spare Part text field when Completion Status is "Changed" or "Replaced"
-        if (completionStatus === "changed" || completionStatus === "replaced") {
-          document.getElementById("sparepart-container").style.display =
-            "block";
-          document.getElementById("sparepart").setAttribute("required", "true"); // Make Spare Part required
-        } else {
-          document.getElementById("sparepart-container").style.display = "none";
-          document.getElementById("sparepart").removeAttribute("required"); // Remove required from Spare Part
-        }
-      }
-
+      // SCREEN ELECTRICAL PANEL -> START
       // Form submission
       document
-        .getElementById("downtime-form")
+        .getElementById("electricalPanel-form")
         .addEventListener("submit", function (e) {
           e.preventDefault(); // Prevent form submission for now (handle actual submission)
-          alert("Downtime report submitted!");
+          alert("Electrical panel  report submitted!");
           // Reset the form to its initial state
-          document.getElementById("downtime-form").reset();
+          document.getElementById("electricalPanel-form").reset();
 
           // Clear the repair time field as it's a calculated value
           document.getElementById("repairTime").value = "";
@@ -416,40 +277,9 @@
           // Optionally, hide any additional fields that are conditionally shown
           document.getElementById("status-container").style.display = "none";
           document.getElementById("sparepart-container").style.display = "none";
-        });
+        })
 
-      // Calculate Repair Time automatically
-      document
-        .getElementById("finishDowntime")
-        .addEventListener("change", calculateRepairTime);
-      document
-        .getElementById("startDowntime")
-        .addEventListener("change", calculateRepairTime);
-
-      function calculateRepairTime() {
-        const start = document.getElementById("startDowntime").value;
-        const finish = document.getElementById("finishDowntime").value;
-
-        if (start && finish) {
-          const startTime = new Date(`1970-01-01T${start}:00`);
-          const finishTime = new Date(`1970-01-01T${finish}:00`);
-          let repairTime = (finishTime - startTime) / 1000 / 60; // in minutes
-
-          const hours = Math.floor(repairTime / 60); // Get the whole hours
-          const minutes = repairTime % 60; // Get the remainder of minutes
-
-          // Format as HH:MM
-          const formattedTime = `${hours
-            .toString()
-            .padStart(2, "0")}:${Math.round(minutes)
-            .toString()
-            .padStart(2, "0")}`;
-
-          document.getElementById("repairTime").value = formattedTime;
-        }
-      }
-
-      // SCREEN DOWNTIME -> END
+      // SCREEN ELECTRICAL PANEL -> END
     </script>
   </body>
 </html>

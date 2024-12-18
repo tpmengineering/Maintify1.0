@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- HEADER -->
-    <title>Maintify1.0 | Preventife Report</title>
+    <title>Maintify1.0 | Downtime Report</title>
     <!-- FAVICON -->
     <link
       rel="shortcut icon"
@@ -34,20 +34,8 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
     />
-    <!-- SWEET ALERT -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- STYLE - START -->
     <style>
-      /* Add custom invalid feedback styling */
-      .is-invalid {
-        border-color: #dc3545; /* Bootstrap danger color */
-        box-shadow: 0 0 5px rgba(220, 53, 69, 0.5); /* Red glow */
-      }
-
-      .is-invalid:focus {
-        border-color: #dc3545;
-        box-shadow: 0 0 5px rgba(220, 53, 69, 0.5);
-      }
       /* Styling for Text Fields, Time Picker, and Date Picker */
       .form-control {
         border: 2px solid #0d6efd; /* Biru primary untuk border */
@@ -141,15 +129,47 @@
     <!-- STYLE - END -->
   </head>
   <body>
-    <!-- PREVENTIFE - START -->
+    <!-- DOWNTIME - START -->
     <main class="container">
       <div class="card shadow-lg">
-        <h3 class="text-center mb-4 fw-semibold">PREVENTIFE REPORT</h3>
-        <form id="preventife-form">
+        <h3 class="text-center mb-4">Downtime Report</h3>
+        <form id="downtime-form">
+          <!-- NAMA -->
+          <div class="mb-3">
+            <label for="nama" class="form-label">Nama</label>
+            <input
+              type="text"
+              class="form-control"
+              id="nama"
+              name="fullname"
+              value="<?php echo isset($_SESSION['fullname']) ? $_SESSION['fullname'] : ''; ?>"
+              readonly
+            />
+          </div>
+
+          <!-- NIK -->
+          <div class="mb-3">
+            <label for="nik" class="form-label" >NIK</label>
+            <input
+              type="text"
+              class="form-control"
+              id="nik"
+              name="nik"
+              value="<?php echo isset($_SESSION['nik']) ? $_SESSION['nik'] : ''; ?>"
+              readonly
+            />
+          </div>
+          
           <!-- TANGGAL -->
           <div class="mb-3">
             <label for="date" class="form-label">Date</label>
-            <input type="date" class="form-control" id="date" required />
+            <input
+              type="date"
+              class="form-control"
+              id="date"
+              name="date"
+              required
+            />
           </div>
 
           <!-- BUILDING -->
@@ -158,6 +178,7 @@
             <select
               id="building"
               class="form-control"
+              name="building"
               required
               onchange="updateAreaLine()"
             >
@@ -173,23 +194,24 @@
           </div>
           <!-- AREA/LINE -->
           <div class="mb-3">
-            <label for="areaLine" class="form-label">Area/Line</label>
-            <select id="areaLine" class="form-control" required>
-              <option value="">Select Area/Line</option>
+            <label for="areaLine" class="form-label">Area</label>
+            <select id="areaLine" class="form-control" name="areaLine" required>
+              <option value="">Select Area</option>
             </select>
           </div>
           <!-- ZONE -->
           <div class="mb-3">
-            <label for="zone" class="form-label">Zone</label>
-            <select id="zone" class="form-control" required>
-              <option value="">Select Zone</option>
-              <option value="noZones">NO ZONES</option>
+            <label for="zone" class="form-label">Line</label>
+            <select id="zone" class="form-control" name="zoneMC" required>
+              <option value="">Select Line</option>
+              <!-- <option value="noZones">NO ZONES</option> -->
               <!-- Looping zone 1 sampai 100 -->
               <script>
                 for (let i = 1; i <= 100; i++) {
                   const option = document.createElement("option");
-                  option.value = `zone${i}`;
-                  option.textContent = `ZONE ${i}`;
+                  // option.value = `zone${i}`;
+                  option.value = i;
+                  option.textContent = `LINE ${i}`;
                   document.getElementById("zone").appendChild(option);
                 }
               </script>
@@ -199,14 +221,20 @@
           <!-- NO MESIN -->
           <div class="mb-3">
             <label for="machineNo" class="form-label">Machine No.</label>
-            <select id="machineNo" class="form-control" required>
+            <select
+              id="machineNo"
+              class="form-control"
+              name="machineNo"
+              required
+            >
               <option value="">Select Machine No.</option>
               <option value="noMachineNumber">NO MACHINE NUMBER</option>
               <!-- Looping mesin 1 sampai 100 -->
               <script>
                 for (let i = 1; i <= 100; i++) {
                   const option = document.createElement("option");
-                  option.value = `machine${i}`;
+                  // option.value = `machine${i}`;
+                  option.value = i;
                   option.textContent = `MACHINE ${i}`;
                   document.getElementById("machineNo").appendChild(option);
                 }
@@ -221,8 +249,8 @@
               type="text"
               class="form-control"
               id="machineId"
+              name="machineId"
               placeholder="Enter Machine ID"
-              maxlength="15"
             />
             <button type="button" class="btn btn-primary" id="scanBarcode">
               <i class="bi bi-upc-scan"></i>
@@ -238,27 +266,27 @@
             ></video>
           </div>
 
-          <!-- START PREVENTIFE -->
+          <!-- START DOWNTIME -->
           <div class="mb-3">
-            <label for="startPreventife" class="form-label"
-              >Start Preventife</label
-            >
+            <label for="startDowntime" class="form-label">Start Downtime</label>
             <input
               type="time"
               class="form-control"
-              id="startPreventife"
+              id="startDowntime"
+              name="startDowntime"
               required
             />
           </div>
-          <!-- FINISH PREVENTIFE -->
+          <!-- FINISH DOWNTIME -->
           <div class="mb-3">
-            <label for="finishPreventife" class="form-label"
-              >Finish Preventife</label
+            <label for="finishDowntime" class="form-label"
+              >Finish Downtime</label
             >
             <input
               type="time"
               class="form-control"
-              id="finishPreventife"
+              id="finishDowntime"
+              name="finishDowntime"
               required
             />
           </div>
@@ -269,48 +297,82 @@
               type="text"
               class="form-control"
               id="repairTime"
+              name="repairTime"
               placeholder="-"
               readonly
             />
           </div>
 
-          <!-- INSPECTION ITEMS -->
+          <!-- PROBLEM -->
           <div class="mb-3">
-            <label for="inspectionItems" class="form-label"
-              >Inspection Items</label
+            <label for="problem" class="form-label">Problem</label>
+            <textarea
+              class="form-control"
+              id="problem"
+              rows="3"
+              name="problem"
+              oninput="this.value = this.value.toUpperCase()"
+              placeholder="Describe the problem that occurred with the machine."
+              required
+            ></textarea>
+          </div>
+
+          <!-- ACTION -->
+          <div class="mb-3">
+            <label for="action" class="form-label">Action</label>
+            <textarea
+              class="form-control"
+              id="action"
+              rows="3"
+              name="action"
+              oninput="this.value = this.value.toUpperCase()"
+              placeholder="Describe the corrective actions taken on the machine."
+              required
+            ></textarea>
+          </div>
+
+          <!-- COMPLETION STATUS -->
+          <div class="mb-3">
+            <label for="completionStatus" class="form-label"
+              >Completion Status</label
             >
-            <select id="inspectionItems" class="form-control" required>
-              <option value="">Select Inspection Item</option>
-              <option value="complete">COMPLATE</option>
-              <option value="incomplete">INCOMPLATE</option>
+            <select
+              id="completionStatus"
+              class="form-control"
+              name="completionStatus"
+              required
+            >
+              <option value="">Select Completion Status</option>
+              <option value="DIPERBAIKI">DIPERBAIKI</option>
+              <option value="DISETTING">DISETTING</option>
+              <option value="DIGANTI">DIGANTI</option>
+              <option value="DIGANTI & DIPERBAIKI">DIGANTI & DIPERBAIKI</option>
             </select>
           </div>
 
-          <!-- UPLOAD BEFORE -->
-          <div class="mb-3">
-            <label for="beforeImage" class="form-label"
-              >Upload Before Preventife</label
-            >
-            <input
-              type="file"
-              class="form-control"
-              id="beforeImage"
-              accept="image/*"
-              required
-            />
+          <!-- STATUS -->
+          <div class="mb-3" id="status-container" style="display: none">
+            <label for="status-2" class="form-label">Status</label>
+            <select id="status-2" class="form-control" name="status-2" required>
+              <option value="">Select Status</option>
+              <option value="PERBAIKAN MESIN">PERBAIKAN MESIN</option>
+              <option value="PENGATURAN MESIN">PENGATURAN MESIN</option>
+              <option value="PENGGANTIAN SPAREPART">
+                PENGGANTIAN SPAREPART
+              </option>
+            </select>
           </div>
 
-          <!-- UPLOAD AFTER -->
-          <div class="mb-3">
-            <label for="afterImage" class="form-label"
-              >Upload After Preventife</label
-            >
+          <!-- SPAREPART -->
+          <div class="mb-3" id="sparepart-container" style="display: none">
+            <label for="sparepart" class="form-label">Spare Part</label>
             <input
-              type="file"
+              type="text"
               class="form-control"
-              id="afterImage"
-              accept="image/*"
-              required
+              id="sparepart"
+              name="sparepart"
+              placeholder="Enter Spare Part"
+              oninput="this.value = this.value.toUpperCase()"
             />
           </div>
 
@@ -318,10 +380,10 @@
           <div class="d-grid">
             <button
               type="submit"
-              class="btn btn-primary mt-3 fw-semibold"
+              class="btn btn-primary mt-3"
               style="padding: 10px 0"
             >
-              SUBMIT
+              Submit
             </button>
           </div>
         </form>
@@ -334,10 +396,10 @@
         &copy; 2024 TPM Engineering. All rights reserved.
       </p>
     </footer>
-    <!-- PREVENTIFE - END -->
+    <!-- DOWNTIME - END -->
 
-    <!-- JAVASCRIPT -->
-    <script src="../JS/script.js"></script>
+    <!-- SWEET ALERT -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- JAVASCRIPT BOOTSTRAP -->
     <script src="../bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
     <!-- ZXING LIBRARY -->
@@ -399,60 +461,54 @@
       }
       // BACA BARCODE - END
 
-      // SCREEN PREVENTIFE -> START
-      // Form submission with additional validation
+      // SCREEN DOWNTIME -> START
+      // Function to handle Building and Area/Line selection
       document
-        .getElementById("preventife-form")
-        .addEventListener("submit", function (e) {
-          e.preventDefault(); // Prevent default form submission
+        .getElementById("building")
+        .addEventListener("change", checkBuildingArea);
+      document
+        .getElementById("areaLine")
+        .addEventListener("change", checkBuildingArea);
 
-          // Check if all dropdowns are selected
-          const requiredDropdowns = [
-            "building",
-            "areaLine",
-            "zone",
-            "machineNo",
-            "inspectionItems",
-          ];
+      function checkBuildingArea() {
+        const building = document.getElementById("building").value;
+        const areaLine = document.getElementById("areaLine").value;
 
-          let allSelected = true;
-          requiredDropdowns.forEach((id) => {
-            const dropdown = document.getElementById(id);
-            if (dropdown.value === "") {
-              allSelected = false;
-              dropdown.classList.add("is-invalid"); // Add error styling
-            } else {
-              dropdown.classList.remove("is-invalid"); // Remove error styling
-            }
-          });
+        // Show Status dropdown if Building is P1 or P2 and Area/Line is ASSEMBLING
+        if (
+          (building === "P1" || building === "P2") &&
+          areaLine === "ASSEMBLING"
+        ) {
+          document.getElementById("status-container").style.display = "block";
+          document.getElementById("status-2").setAttribute("required", "true"); // Make Status required
+        } else {
+          document.getElementById("status-container").style.display = "none";
+          document.getElementById("status-2").removeAttribute("required"); // Remove required from Status
+        }
+      }
 
-          // If not all dropdowns are selected, show an alert and do not submit
-          if (!allSelected) {
-            alert(
-              "Please select all required fields before submitting the form."
-            );
-            return;
-          }
+      // Show spare part input if Completion Status is "DIGANTI" or "DIGANTI & DIPERBAIKI"
+      document
+        .getElementById("completionStatus")
+        .addEventListener("change", showSparePartField);
 
-          // If validation passes, show success message and reset the form
-          // alert("Preventive report submitted successfully!");
-          // document.getElementById("preventife-form").reset();
+      function showSparePartField() {
+        const completionStatus =
+          document.getElementById("completionStatus").value;
 
-          // Clear calculated fields
-          // document.getElementById("repairTime").value = "";
-        });
-
-      // Optional: Add live validation for dropdowns
-      const dropdowns = document.querySelectorAll("select");
-      dropdowns.forEach((dropdown) => {
-        dropdown.addEventListener("change", () => {
-          if (dropdown.value === "") {
-            dropdown.classList.add("is-invalid");
-          } else {
-            dropdown.classList.remove("is-invalid");
-          }
-        });
-      });
+        // Show Spare Part text field when Completion Status is "DIGANTI" or "DIGANTI & DIPERBAIKI"
+        if (
+          completionStatus === "DIGANTI" ||
+          completionStatus === "DIGANTI & DIPERBAIKI"
+        ) {
+          document.getElementById("sparepart-container").style.display =
+            "block";
+          document.getElementById("sparepart").setAttribute("required", "true"); // Make Spare Part required
+        } else {
+          document.getElementById("sparepart-container").style.display = "none";
+          document.getElementById("sparepart").removeAttribute("required"); // Remove required from Spare Part
+        }
+      }
 
       // Data mapping between Building and Area/Line
       const areaLineOptions = {
@@ -470,7 +526,7 @@
         const areaLine = document.getElementById("areaLine");
 
         // Clear previous options
-        areaLine.innerHTML = '<option value="">Select Area/Line</option>';
+        areaLine.innerHTML = '<option value="">Select Area</option>';
 
         // Populate new options based on selected building
         if (areaLineOptions[building]) {
@@ -482,85 +538,18 @@
           });
         }
       }
-      // Form submission
-      document
-        .getElementById("preventife-form")
-        .addEventListener("submit", function (e) {
-          e.preventDefault(); // Prevent form submission for now (handle actual submission)
-
-          // SweetAlert confirmation
-          const swalWithBootstrapButtons = Swal.mixin({
-            customClass: {
-              confirmButton: "btn btn-success",
-              cancelButton: "btn btn-danger",
-              actions: "my-actions", // Custom class for actions container
-            },
-            buttonsStyling: false,
-          });
-
-          swalWithBootstrapButtons
-            .fire({
-              title: "Are you sure?",
-              text: "Do you want to submit the Preventife report?",
-              icon: "warning",
-              showCancelButton: true,
-              confirmButtonText: "Yes, submit it!",
-              cancelButtonText: "No, cancel!",
-              reverseButtons: true,
-            })
-            .then((result) => {
-              if (result.isConfirmed) {
-                // On confirmation, submit the form
-                swalWithBootstrapButtons.fire({
-                  title: "Submitted!",
-                  text: "Your Preventife report has been submitted.",
-                  icon: "success",
-                });
-
-                // Reset the form to its initial state
-                document.getElementById("preventife-form").reset();
-
-                // Clear the repair time field as it's a calculated value
-                document.getElementById("repairTime").value = "";
-
-                // Optionally, hide any additional fields that are conditionally shown
-                document.getElementById("status-container").style.display =
-                  "none";
-                document.getElementById("sparepart-container").style.display =
-                  "none";
-              } else if (result.dismiss === Swal.DismissReason.cancel) {
-                swalWithBootstrapButtons.fire({
-                  title: "Cancelled",
-                  text: "Your report has not been submitted.",
-                  icon: "error",
-                });
-              }
-            });
-
-          // Custom CSS to add space between the buttons
-          const style = document.createElement("style");
-          style.innerHTML = `
-      .my-actions .swal2-confirm, .my-actions .swal2-cancel {
-        margin-right: 10px; /* Adjust this value for more or less space */
-      }
-      .my-actions .swal2-cancel {
-        margin-left: 10px; /* Optionally add left margin for the cancel button */
-      }
-    `;
-          document.head.appendChild(style);
-        });
 
       // Calculate Repair Time automatically
       document
-        .getElementById("finishPreventife")
+        .getElementById("finishDowntime")
         .addEventListener("change", calculateRepairTime);
       document
-        .getElementById("startPreventife")
+        .getElementById("startDowntime")
         .addEventListener("change", calculateRepairTime);
 
       function calculateRepairTime() {
-        const start = document.getElementById("startPreventife").value;
-        const finish = document.getElementById("finishPreventife").value;
+        const start = document.getElementById("startDowntime").value;
+        const finish = document.getElementById("finishDowntime").value;
 
         if (start && finish) {
           const startTime = new Date(`1970-01-01T${start}:00`);
@@ -581,7 +570,49 @@
         }
       }
 
-      // SCREEN PREVENTIFE -> END
+      // Form submission
+      document
+        .getElementById("downtime-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault(); // Prevent default form submission
+
+          const formData = new FormData(this);
+
+          fetch("submit-downtime.php", {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                // Show success SweetAlert
+                Swal.fire({
+                  icon: "success",
+                  title: "Success!",
+                  text: data.message,
+                });
+                this.reset(); // Reset the form
+              } else {
+                // Show error SweetAlert
+                Swal.fire({
+                  icon: "error",
+                  title: "Error!",
+                  text: "Error: " + data.message,
+                });
+              }
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              // Show error SweetAlert
+              Swal.fire({
+                icon: "error",
+                title: "Oops!",
+                text: "An error occurred while submitting the form.",
+              });
+            });
+        });
+
+      // SCREEN DOWNTIME -> END
     </script>
   </body>
 </html>

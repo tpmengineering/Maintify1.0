@@ -67,12 +67,13 @@
     <main class="container d-flex">
       <div class="card shadow-lg p-4">
         <h3 class="text-center mb-4">Register</h3>
-        <form id="register-form">
+        <form id="register-form" action="register.php" method="POST">
           <div class="mb-3">
             <label for="username" class="form-label">Username</label>
             <input
               type="text"
               class="form-control"
+              name="username"
               id="username"
               placeholder="Enter your username"
               required
@@ -83,6 +84,7 @@
             <input
               type="text"
               class="form-control"
+              name="fullname"
               id="fullname"
               placeholder="Enter your full name"
               required
@@ -93,6 +95,7 @@
             <input
               type="text"
               class="form-control"
+              name="nik"
               id="nik"
               placeholder="Enter your NIK"
               required
@@ -103,6 +106,7 @@
             <input
               type="password"
               class="form-control"
+              name="password"
               id="password"
               placeholder="Enter your password"
               required
@@ -132,7 +136,7 @@
           </div>
           <p class="text-center mt-3">
             <small
-              >Already have an account? <a href="index.html">Login</a></small
+              >Already have an account? <a href="../index.php">Login</a></small
             >
           </p>
         </form>
@@ -151,28 +155,101 @@
     <!-- LINK JAVASCRIP BOOTSTRAP -->
     <script src="../bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>
     <!-- SCRIPT -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
       // SCREEN REGISTER -> START
       document
         .getElementById("register-form")
-        .addEventListener("submit", function (event) {
-          const password = document.getElementById("password").value;
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+
+          const formData = new FormData(this);
+          const password = formData.get("password");
           const confirmPassword =
             document.getElementById("confirm-password").value;
-          const errorDiv = document.getElementById("password-error");
 
+          // Check if passwords match
           if (password !== confirmPassword) {
-            event.preventDefault();
-            errorDiv.style.display = "block";
+            document.getElementById("password-error").style.display = "block";
+            return; // Prevent submission if passwords don't match
           } else {
-            errorDiv.style.display = "none";
-
-            // Clear form inputs after successful submission
-            document.getElementById("register-form").reset();
-
-            // Optional: Display a success message (can be customized further)
-            alert("Registration successful!");
+            document.getElementById("password-error").style.display = "none";
           }
+
+          // Add custom CSS to style the buttons' spacing
+          const style = document.createElement("style");
+          style.innerHTML = `
+        .my-actions .swal2-confirm, .my-actions .swal2-cancel {
+          margin-right: 10px; /* Adjust this value for more or less space */
+        }
+        .my-actions .swal2-cancel {
+          margin-left: 10px; /* Optionally add left margin for the cancel button */
+        }
+      `;
+          document.head.appendChild(style);
+
+          // SweetAlert popup before submitting
+          const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+              confirmButton: "btn btn-success",
+              cancelButton: "btn btn-danger",
+              actions: "my-actions", // Use custom class for button spacing
+            },
+            buttonsStyling: false,
+          });
+
+          swalWithBootstrapButtons
+            .fire({
+              title: "Are you sure?",
+              text: "Do you want to submit the registration form?",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonText: "Yes, submit it!",
+              cancelButtonText: "No, cancel!",
+              reverseButtons: true,
+            })
+            .then((result) => {
+              if (result.isConfirmed) {
+                // Proceed to submit the form if confirmed
+                fetch("register.php", {
+                  method: "POST",
+                  body: formData,
+                })
+                  .then((response) => response.json())
+                  .then((result) => {
+                    if (result.status === "success") {
+                      swalWithBootstrapButtons.fire({
+                        title: "Submitted!",
+                        text: "Your registration has been successfully submitted.",
+                        icon: "success",
+                      });
+                      this.reset(); // Reset form on success
+                    } else {
+                      swalWithBootstrapButtons.fire({
+                        title: "Error",
+                        text: result.message,
+                        icon: "error",
+                      });
+                    }
+                  })
+                  .catch((error) => {
+                    console.error("Error:", error);
+                    swalWithBootstrapButtons.fire({
+                      title: "Error",
+                      text: "An error occurred. Please try again.",
+                      icon: "error",
+                    });
+                  });
+              } else {
+                // If cancelled, show a cancellation message
+                swalWithBootstrapButtons.fire({
+                  title: "Cancelled",
+                  text: "Your registration was not submitted.",
+                  icon: "error",
+                });
+              }
+            });
         });
       // SCREEN REGISTER -> END
     </script>
